@@ -51,6 +51,8 @@ export default async function parse21vek(page = 1): Promise<Partial<Product>[]> 
     `https://www.21vek.by/diapers/page:${page}/?filter%5Bproducer%5D%5B%5D=pampers`
   );
 
+  if (!response.ok) return [];
+
   const root = parse(await response.text());
   const productEls = root.querySelectorAll('.result__item');
 
