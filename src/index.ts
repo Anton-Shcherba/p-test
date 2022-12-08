@@ -1,16 +1,22 @@
 import express from 'express';
+import parse21vek, { Product } from './parser/21vek';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-let number = 0;
+let parsing: Partial<Product>[] = [];
 
 app.get('/', (request, response) => {
-  response.send(`Current num: ${number}`);
+  response.send(parsing);
 });
 
 app.listen(port, () => console.log(`Running on port ${port}`));
 
-setInterval(() => {
-  number += 1;
-}, 1000);
+function timeout() {
+  setTimeout(async function () {
+    parsing = await parse21vek();
+    timeout();
+  }, 1000);
+}
+
+timeout();
