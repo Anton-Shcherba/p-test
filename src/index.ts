@@ -1,20 +1,24 @@
 import express from 'express';
-import parse21vek, { Product } from './parser/21vek';
+import parser from './parser';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-let parsing: Partial<Product>[] = [];
+let data: Awaited<ReturnType<typeof parser>> = [];
 
-app.get('/', (request, response) => {
-  response.send(parsing);
+app.get('/', (_, response) => {
+  response.send(data);
 });
 
 app.listen(port, () => console.log(`Running on port ${port}`));
 
 function timeout() {
   setTimeout(async function () {
-    parsing = await parse21vek();
+    try {
+      data = await parser();
+    } catch (error) {
+      console.log(error);
+    }
     timeout();
   }, 1000);
 }
