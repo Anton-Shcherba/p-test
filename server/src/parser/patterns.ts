@@ -33,7 +33,7 @@ export const BRAND_SERIES: [string, string[]][] = [
   ['manu', []],
   ['noopii', []],
   ['senso baby', ['sensitive', 'simple', 'ecoline']],
-  ['senso', ['simple', 'sens']],
+  ['senso', ['simple', 'sensitive']],
   ['skippy', ['more happiness', 'ultra', 'pull up', 'econom']],
   ['synergetic', ['pure nature']],
   ['sleepy', []],
@@ -56,7 +56,7 @@ export const BRAND_SERIES: [string, string[]][] = [
 
 export const SIZES: [string, string[]][] = [
   ['7 XXXL', ['7', 'лет', 'XXXL']],
-  ['6 XXL', ['6', 'large', 'XXL']],
+  ['6 XXL', ['6', 'large', 'junior extra', 'XXL']],
   ['5 XL', ['5', 'junior', '5XL-junior', 'XL', 'ХL']],
   ['4 L', ['4', 'maxi', '4L-maxi', 'L']],
   ['3 M', ['3', 'midi', '3M-midi', 'M', 'М']],

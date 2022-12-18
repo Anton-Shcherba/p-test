@@ -12,7 +12,7 @@ export type Product = {
   imgLink: string;
   count: number;
   price: number;
-  size: number | string;
+  size: string;
   priceForOne: number;
   isPants: boolean;
 };

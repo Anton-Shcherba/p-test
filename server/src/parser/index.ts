@@ -3,9 +3,9 @@ import { Product } from './types';
 import parseFuncArr from './parseSites';
 
 function getBrandNSeries(title: string): [string | undefined, string | undefined] {
-  const replacing: [RegExp, string] = [/ /gi, '[ &-]?'];
+  const replacing: [RegExp, string] = [/ /gi, '[&-»«]? ?'];
   const brandInd = BRAND_SERIES.findIndex(([brand]) => title.match(new RegExp(brand.replace(...replacing), 'i')));
-  const seriesInd = BRAND_SERIES[brandInd]?.findIndex(([_, series]) =>
+  const seriesInd = BRAND_SERIES[brandInd]?.[1].findIndex((series) =>
     title.match(new RegExp(series.replace(...replacing), 'i'))
   );
   return [BRAND_SERIES[brandInd]?.[0], BRAND_SERIES[brandInd]?.[1][seriesInd]];
@@ -18,8 +18,8 @@ function getSize(title: string): string | undefined {
 }
 
 function getCount(title: string): number | undefined {
-  const regArr = title.match(/ ?\d+ ?(?=шт? ?)/i);
-  return regArr ? +regArr[0].trim() : undefined;
+  const regArr = title.match(/(\d*?)(?:\+?)(\d+)(?= ?шт| ?ш)/i);
+  return regArr?.[1] ? +regArr[1] + +regArr[2] : regArr ? +regArr[0].trim() : undefined;
 }
 
 export default async function parser(): Promise<Partial<Product>[]> {
