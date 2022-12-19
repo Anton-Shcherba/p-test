@@ -1,11 +1,34 @@
 import express from 'express';
 import cors from 'cors';
 import parser from './parser';
+import mongoose, { Schema } from 'mongoose';
+import { Product } from './parser/types';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-let data: Awaited<ReturnType<typeof parser>> = [];
+await mongoose.connect(
+  process.env.DATABASE_URL ||
+    'mongodb+srv://my-first-app-main-db-0bf4424284c:PedM9wN7aq8sSgr7pmx178U1t81gDc@prod-us-central1-1.lfuy1.mongodb.net/my-first-app-main-db-0bf4424284c'
+);
+
+const ProductsModel = mongoose.model(
+  'product',
+  new Schema<Product>({
+    brand: String,
+    series: String,
+    link: String,
+    imgLink: String,
+    count: Number,
+    price: Number,
+    size: String,
+    priceForOne: Number,
+    isPants: Boolean,
+  })
+);
+const users = await ProductsModel.find({});
+
+let data: Partial<Product>[] = users;
 
 app.use(cors());
 
@@ -19,6 +42,8 @@ function timeout() {
   setTimeout(async function () {
     try {
       data = await (await parser()).sort((p1, p2) => (p1.priceForOne || Infinity) - (p2.priceForOne || Infinity));
+      await ProductsModel.deleteMany({});
+      await ProductsModel.insertMany(data);
     } catch (error) {
       console.log(error);
     }
