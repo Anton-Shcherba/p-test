@@ -172,7 +172,10 @@ function App() {
         sx={{ mx: 'auto' }}
         count={Math.ceil(filtering.length / 20)}
         page={page}
-        onChange={(_, value) => setPage(value)}
+        onChange={(_, value) => {
+          setPage(value);
+          window.scrollTo(0, 0);
+        }}
       />
     </Box>
   );
