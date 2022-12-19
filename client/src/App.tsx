@@ -57,7 +57,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://localhost:3000/');
+      const response = await fetch('https://my-first-app.adaptable.app');
       const result = await response.json();
       setData(result);
     };
