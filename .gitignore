@@ -3,4 +3,4 @@
 
 # production
 server/dist
-client/build
+# client/build
