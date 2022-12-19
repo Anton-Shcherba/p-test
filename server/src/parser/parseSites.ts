@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { parse } from 'node-html-parser';
-import { PreParseData, DetMirItem } from './types';
+import { PreParseData, DetMirItem, YamigomResponse } from './types';
 
 async function parseEmall(page = 1): Promise<PreParseData[]> {
   const response = await fetch(`https://emall.by/catalog/9930.html?lazy_steep=${page}`);
@@ -53,6 +53,27 @@ async function parseDetmir(offset = 0): Promise<PreParseData[]> {
   return items.length === 100 ? preParseData.concat(await parseDetmir(offset + 100)) : preParseData;
 }
 
-const parseFuncArr: Array<() => Promise<PreParseData[]>> = [parseEmall, parse21vek, parseDetmir];
+async function parseYamigom(): Promise<PreParseData[]> {
+  const category = 6295;
+  const apiUrl = `https://yamigom-store.by/api/v2/store/group/${category}?sort_id=5`;
+  const siteUrl = `https://yamigom-store.by/category/${category}`;
+  const response = await fetch(apiUrl, {
+    headers: { 'Web-User-Agent': 'SiteYamigom/2.12.0' },
+  });
+  const items = (await response.json()) as YamigomResponse;
+
+  const preParseData: PreParseData[] = items[0].offers.map((item) => {
+    return {
+      title: item.name,
+      price: `${item.price / 100}`,
+      link: `${siteUrl}?productId=${item.id}`,
+      imgLink: item.images[0],
+    };
+  });
+
+  return preParseData;
+}
+
+const parseFuncArr: Array<() => Promise<PreParseData[]>> = [parseEmall, parse21vek, parseDetmir, parseYamigom];
 
 export default parseFuncArr;

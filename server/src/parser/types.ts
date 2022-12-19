@@ -23,3 +23,12 @@ export type DetMirItem = {
   link: { web_url: string };
   pictures: { web: string }[];
 };
+
+type YamigomItem = {
+  id: number;
+  name: string;
+  price: number;
+  images: [string];
+};
+
+export type YamigomResponse = [{ offers: [YamigomItem] }];
